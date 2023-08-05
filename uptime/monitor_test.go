@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"gitea.svc.boardware.com/bwc/common/constants"
-	"gitea.svc.boardware.com/bwc/model"
-	"gitea.svc.boardware.com/bwc/model/common"
+	"github.com/Dparty/common/constants"
+	"github.com/Dparty/model"
+	"github.com/Dparty/model/common"
 	"github.com/spf13/viper"
 )
 

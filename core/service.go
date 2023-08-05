@@ -1,9 +1,9 @@
 package core
 
 import (
-	"gitea.svc.boardware.com/bwc/common/constants"
+	"github.com/Dparty/common/constants"
 
-	"gitea.svc.boardware.com/bwc/common/utils"
+	"github.com/Dparty/common/utils"
 
 	"gorm.io/gorm"
 )

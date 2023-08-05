@@ -1,13 +1,13 @@
 # model
 
 ```bash
-GOPRIVATE=gitea.svc.boardware.com/bwc go get -u -f gitea.svc.boardware.com/bwc/model/uptime
+GOPRIVATE=github.com/Dparty go get -u -f github.com/Dparty/model/uptime
 ```
 
 ```bash
-GOPRIVATE=gitea.svc.boardware.com/bwc go get -u -f gitea.svc.boardware.com/bwc/model/core
+GOPRIVATE=github.com/Dparty go get -u -f github.com/Dparty/model/core
 ```
 
 ```bash
-GOPRIVATE=gitea.svc.boardware.com/bwc go get -u -f gitea.svc.boardware.com/bwc/model
+GOPRIVATE=github.com/Dparty go get -u -f github.com/Dparty/model
 ```

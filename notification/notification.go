@@ -1,7 +1,7 @@
 package notification
 
 import (
-	"gitea.svc.boardware.com/bwc/model/common"
+	"github.com/Dparty/model/common"
 	"gorm.io/gorm"
 )
 

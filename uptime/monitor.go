@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"gitea.svc.boardware.com/bwc/common/constants"
-	"gitea.svc.boardware.com/bwc/model/common"
+	"github.com/Dparty/common/constants"
+	"github.com/Dparty/model/common"
 	"gorm.io/gorm"
 )
 
