@@ -4,8 +4,6 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
-	"github.com/Dparty/model/common"
-
 	"gorm.io/gorm"
 )
 
@@ -22,38 +20,43 @@ type Item struct {
 	RestaurantId uint
 	Name         string
 	Pricing      int64
-	Properties   ItemProperties
+	Attributes   Attributes
 }
 
-type ItemProperties []ItemProperty
+type Attributes []Attribute
 
-func (ItemProperties) GormDataType() string {
+func (Attributes) GormDataType() string {
 	return "JSON"
 }
 
-func (s *ItemProperties) Scan(value any) error {
+func (s *Attributes) Scan(value any) error {
 	return json.Unmarshal(value.([]byte), s)
 }
 
-func (s ItemProperties) Value() (driver.Value, error) {
+func (s Attributes) Value() (driver.Value, error) {
 	b, err := json.Marshal(s)
 	return b, err
 }
 
-type ItemProperty struct {
-	Label  string
-	Values common.StringList
+type Attribute struct {
+	Label   string   `json:"label"`
+	Options []Option `json:"options"`
 }
 
-func (ItemProperty) GormDataType() string {
+type Option struct {
+	Label string `json:"label"`
+	Extra int64  `json:"extra"`
+}
+
+func (Attribute) GormDataType() string {
 	return "JSON"
 }
 
-func (s *ItemProperty) Scan(value any) error {
+func (s *Attribute) Scan(value any) error {
 	return json.Unmarshal(value.([]byte), s)
 }
 
-func (s ItemProperty) Value() (driver.Value, error) {
+func (s Attribute) Value() (driver.Value, error) {
 	b, err := json.Marshal(s)
 	return b, err
 }
