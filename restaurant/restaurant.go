@@ -7,7 +7,6 @@ type Restaurant struct {
 	AccountId   uint
 	Name        string
 	Description string
-	Items       []Item
 }
 
 type Item struct {
