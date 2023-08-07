@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
+	"github.com/Dparty/model/common"
 	"gorm.io/gorm"
 )
 
@@ -21,6 +22,7 @@ type Item struct {
 	Name         string
 	Pricing      int64
 	Attributes   Attributes
+	Images       []common.ObjectStorage
 }
 
 type Attributes []Attribute
