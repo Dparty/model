@@ -20,7 +20,7 @@ type ObjectStorage struct {
 }
 
 type List[T any] struct {
-	Data T
+	Data []T
 }
 
 func (l List[T]) GormDataType() string {
