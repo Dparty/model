@@ -22,7 +22,7 @@ type Item struct {
 	Name         string
 	Pricing      int64
 	Attributes   Attributes
-	Images       common.List[common.ObjectStorage] `json:"images" gorm:"type:JSON"`
+	Images       common.StringList `json:"images" gorm:"type:JSON"`
 }
 
 type Attributes []Attribute
