@@ -19,23 +19,6 @@ type ObjectStorage struct {
 	Url      string                `json:"url"`
 }
 
-type List[T any] struct {
-	Data []T
-}
-
-func (l List[T]) GormDataType() string {
-	return "JSON"
-}
-
-func (l *List[T]) Scan(value any) error {
-	return json.Unmarshal(value.([]byte), l.Data)
-}
-
-func (l List[T]) Value() (driver.Value, error) {
-	b, err := json.Marshal(l.Data)
-	return b, err
-}
-
 func (ObjectStorage) GormDataType() string {
 	return "JSON"
 }

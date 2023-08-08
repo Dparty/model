@@ -14,6 +14,7 @@ type Restaurant struct {
 	Name        string
 	Description string
 	Items       []Item
+	Tables      []Table
 }
 
 type Item struct {
@@ -61,4 +62,10 @@ func (s *Attribute) Scan(value any) error {
 func (s Attribute) Value() (driver.Value, error) {
 	b, err := json.Marshal(s)
 	return b, err
+}
+
+type Table struct {
+	gorm.Model
+	RestaurantId uint
+	Label        string `json:"label"`
 }
