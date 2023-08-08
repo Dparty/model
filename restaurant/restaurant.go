@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
+	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model/common"
 	"gorm.io/gorm"
 )
@@ -17,6 +18,11 @@ type Restaurant struct {
 	Tables      []Table
 }
 
+func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
+	r.ID = utils.GenerteId()
+	return
+}
+
 type Item struct {
 	gorm.Model
 	RestaurantId uint
@@ -24,6 +30,11 @@ type Item struct {
 	Pricing      int64
 	Attributes   Attributes
 	Images       common.StringList `json:"images" gorm:"type:JSON"`
+}
+
+func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
+	i.ID = utils.GenerteId()
+	return
 }
 
 type Attributes []Attribute
@@ -51,6 +62,21 @@ type Option struct {
 	Extra int64  `json:"extra"`
 }
 
+type Options []Option
+
+func (Options) GormDataType() string {
+	return "JSON"
+}
+
+func (s *Options) Scan(value any) error {
+	return json.Unmarshal(value.([]byte), s)
+}
+
+func (s Options) Value() (driver.Value, error) {
+	b, err := json.Marshal(s)
+	return b, err
+}
+
 func (Attribute) GormDataType() string {
 	return "JSON"
 }
@@ -68,4 +94,43 @@ type Table struct {
 	gorm.Model
 	RestaurantId uint
 	Label        string `json:"label"`
+}
+
+func (t *Table) BeforeCreate(tx *gorm.DB) (err error) {
+	t.ID = utils.GenerteId()
+	return
+}
+
+type OrderItem struct {
+	gorm.Model
+	ItemName string  `json:"itemsName"`
+	Pricing  int64   `json:"pricing"`
+	Options  Options `json:"options"`
+}
+
+type OrderItems []OrderItem
+
+func (OrderItems) GormDataType() string {
+	return "JSON"
+}
+
+func (s *OrderItems) Scan(value any) error {
+	return json.Unmarshal(value.([]byte), s)
+}
+
+func (s OrderItems) Value() (driver.Value, error) {
+	b, err := json.Marshal(s)
+	return b, err
+}
+
+type Bill struct {
+	gorm.Model
+	Items       OrderItems
+	TableLabel  string
+	CheckoutUrl string
+}
+
+func (b *Bill) BeforeCreate(tx *gorm.DB) (err error) {
+	b.ID = utils.GenerteId()
+	return
 }
