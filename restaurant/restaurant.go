@@ -16,6 +16,7 @@ type Restaurant struct {
 	Description string
 	Items       []Item
 	Tables      []Table
+	Tags        common.StringList
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
@@ -30,6 +31,7 @@ type Item struct {
 	Pricing      int64
 	Attributes   Attributes
 	Images       common.StringList `json:"images" gorm:"type:JSON"`
+	Tags         common.StringList
 }
 
 func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
