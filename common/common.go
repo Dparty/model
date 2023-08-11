@@ -7,6 +7,22 @@ import (
 
 type StringList []string
 
+func StringBackward(s StringList) []string {
+	var slist []string = make([]string, 0)
+	for _, v := range s {
+		slist = append(slist, v)
+	}
+	return slist
+}
+
+func StringForward(s []string) StringList {
+	var slist StringList = make(StringList, 0)
+	for _, v := range s {
+		slist = append(slist, v)
+	}
+	return slist
+}
+
 func (StringList) GormDataType() string {
 	return "JSON"
 }
