@@ -17,6 +17,7 @@ type Restaurant struct {
 	Items       []Item
 	Tables      []Table
 	Tags        common.StringList
+	Printers    []Printer
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
@@ -32,6 +33,7 @@ type Item struct {
 	Attributes   Attributes
 	Images       common.StringList `json:"images" gorm:"type:JSON"`
 	Tags         common.StringList
+	Printers     []uint
 }
 
 func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
@@ -134,5 +136,18 @@ type Bill struct {
 
 func (b *Bill) BeforeCreate(tx *gorm.DB) (err error) {
 	b.ID = utils.GenerteId()
-	return
+	return err
+}
+
+type Printer struct {
+	gorm.Model
+	RestaurantId uint
+	Name         string `json:"name"`
+	Sn           string `json:"sn"`
+	Description  string `json:"description"`
+}
+
+func (printer *Printer) BeforeCreate(tx *gorm.DB) (err error) {
+	printer.ID = utils.GenerteId()
+	return err
 }
