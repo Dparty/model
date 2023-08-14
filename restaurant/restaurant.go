@@ -14,9 +14,9 @@ type Restaurant struct {
 	AccountId   uint
 	Name        string
 	Description string
-	Items       []Item
-	Tables      []Table
-	Printers    []Printer
+	// Items       []Item
+	// Tables      []Table
+	// Printers    []Printer
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
