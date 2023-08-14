@@ -114,9 +114,17 @@ func (t *Table) BeforeCreate(tx *gorm.DB) (err error) {
 
 type OrderItem struct {
 	gorm.Model
-	ItemName string  `json:"itemsName"`
-	Pricing  int64   `json:"pricing"`
-	Options  Options `json:"options"`
+	Name    string  `json:"itemsName"`
+	Pricing int64   `json:"pricing"`
+	Options Options `json:"options"`
+}
+
+func (o OrderItem) Total() int64 {
+	var extra int64 = 0
+	for _, option := range o.Options {
+		extra += option.Extra
+	}
+	return o.Pricing + extra
 }
 
 type OrderItems []OrderItem
@@ -139,6 +147,14 @@ type Bill struct {
 	Items       OrderItems
 	TableLabel  string
 	CheckoutUrl string
+}
+
+func (b Bill) Total() int64 {
+	var total int64 = 0
+	for _, item := range b.Items {
+		total += item.Total()
+	}
+	return total
 }
 
 func (b *Bill) BeforeCreate(tx *gorm.DB) (err error) {
