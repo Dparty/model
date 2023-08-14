@@ -17,7 +17,7 @@ type Restaurant struct {
 	Items       []Item
 	Tables      []Table
 	Tags        common.StringList
-	Printers    []Printer
+	// Printers    []Printer
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
