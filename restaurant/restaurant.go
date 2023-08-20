@@ -162,12 +162,20 @@ func (b *Bill) BeforeCreate(tx *gorm.DB) (err error) {
 	return err
 }
 
+type PrinterType string
+
+const (
+	BILL    PrinterType = "BILL"
+	KITCHEN PrinterType = "KITCHEN"
+)
+
 type Printer struct {
 	gorm.Model
 	RestaurantId uint
-	Name         string `json:"name"`
-	Sn           string `json:"sn"`
-	Description  string `json:"description"`
+	Name         string      `json:"name"`
+	Sn           string      `json:"sn"`
+	Description  string      `json:"description"`
+	Type         PrinterType `json:"type" gorm:"type:JSON"`
 }
 
 func (printer *Printer) BeforeCreate(tx *gorm.DB) (err error) {
