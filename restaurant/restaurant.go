@@ -166,7 +166,7 @@ func (s Orders) Value() (driver.Value, error) {
 
 type Bill struct {
 	gorm.Model
-	RestaurantId uint
+	RestaurantId uint `gorm:"index:rest_id"`
 	Orders       Orders
 	PickUpCode   int64
 	TableLabel   string
