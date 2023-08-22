@@ -166,14 +166,14 @@ func (s Orders) Value() (driver.Value, error) {
 
 type Bill struct {
 	gorm.Model
-	Items       Orders
+	Orders      Orders
 	TableLabel  string
 	CheckoutUrl string
 }
 
 func (b Bill) Total() int64 {
 	var total int64 = 0
-	for _, item := range b.Items {
+	for _, item := range b.Orders {
 		total += item.Total()
 	}
 	return total
