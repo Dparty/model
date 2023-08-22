@@ -167,6 +167,7 @@ func (s Orders) Value() (driver.Value, error) {
 type Bill struct {
 	gorm.Model
 	Orders      Orders
+	PickUpCode  string
 	TableLabel  string
 	CheckoutUrl string
 }
