@@ -33,14 +33,23 @@ func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Item struct {
 	gorm.Model
-	RestaurantId uint
-	Name         string
-	Pricing      int64
-	Attributes   Attributes
+	RestaurantId uint              `json:"restaurantId"`
+	Name         string            `json:"name"`
+	Pricing      int64             `json:"pricing"`
+	Attributes   Attributes        `json:"attributes"`
 	Images       common.StringList `json:"images" gorm:"type:JSON"`
-	Tags         common.StringList
-	Printers     common.IDList
-	Categories   common.IDList
+	Tags         common.StringList `json:"tags"`
+	Printers     common.IDList     `json:"printers"`
+	Categories   common.IDList     `json:"categories"`
+}
+
+func (s *Item) Scan(value any) error {
+	return json.Unmarshal(value.([]byte), s)
+}
+
+func (s Item) Value() (driver.Value, error) {
+	b, err := json.Marshal(s)
+	return b, err
 }
 
 func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
@@ -112,39 +121,38 @@ func (t *Table) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
-type OrderItem struct {
+type Order struct {
 	gorm.Model
-	Name    string  `json:"itemsName"`
-	Pricing int64   `json:"pricing"`
+	Item    Item    `json:"item" gorm:"type:JSON"`
 	Options Options `json:"options"`
 }
 
-func (o OrderItem) Total() int64 {
+func (o Order) Total() int64 {
 	var extra int64 = 0
 	for _, option := range o.Options {
 		extra += option.Extra
 	}
-	return o.Pricing + extra
+	return o.Item.Pricing + extra
 }
 
-type OrderItems []OrderItem
+type Orders []Order
 
-func (OrderItems) GormDataType() string {
+func (Orders) GormDataType() string {
 	return "JSON"
 }
 
-func (s *OrderItems) Scan(value any) error {
+func (s *Orders) Scan(value any) error {
 	return json.Unmarshal(value.([]byte), s)
 }
 
-func (s OrderItems) Value() (driver.Value, error) {
+func (s Orders) Value() (driver.Value, error) {
 	b, err := json.Marshal(s)
 	return b, err
 }
 
 type Bill struct {
 	gorm.Model
-	Items       OrderItems
+	Items       Orders
 	TableLabel  string
 	CheckoutUrl string
 }
