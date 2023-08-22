@@ -168,7 +168,7 @@ type Bill struct {
 	gorm.Model
 	RestaurantId uint
 	Orders       Orders
-	PickUpCode   string
+	PickUpCode   int64
 	TableLabel   string
 	CheckoutUrl  string
 }
