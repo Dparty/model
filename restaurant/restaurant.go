@@ -3,6 +3,7 @@ package restaurant
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"errors"
 
 	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model/common"
@@ -58,6 +59,19 @@ func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 type Attributes []Attribute
+
+func (as Attributes) GetOption(left, right string) (Option, error) {
+	for _, a := range as {
+		if left == a.Label {
+			for _, option := range a.Options {
+				if right == option.Label {
+					return option, nil
+				}
+			}
+		}
+	}
+	return Option{}, errors.New("NotFound")
+}
 
 func (Attributes) GormDataType() string {
 	return "JSON"
