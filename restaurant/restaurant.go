@@ -166,10 +166,11 @@ func (s Orders) Value() (driver.Value, error) {
 
 type Bill struct {
 	gorm.Model
-	Orders      Orders
-	PickUpCode  string
-	TableLabel  string
-	CheckoutUrl string
+	RestaurantId uint
+	Orders       Orders
+	PickUpCode   string
+	TableLabel   string
+	CheckoutUrl  string
 }
 
 func (b Bill) Total() int64 {
