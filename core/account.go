@@ -19,3 +19,15 @@ func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
 	a.ID = utils.GenerteId()
 	return
 }
+
+func FindAccount(id uint) Account {
+	var account Account
+	db.Find(&account, id)
+	return account
+}
+
+func FindAccountByEmail(email string) *Account {
+	var account *Account
+	db.First(&account, "email = ?", email)
+	return account
+}
