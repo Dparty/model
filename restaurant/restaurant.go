@@ -7,8 +7,25 @@ import (
 
 	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model/common"
+	"github.com/Dparty/model/core"
 	"gorm.io/gorm"
 )
+
+func CreateRestaurant(accountId uint, name, description string) Restaurant {
+	r := Restaurant{
+		AccountId:   accountId,
+		Name:        name,
+		Description: description,
+	}
+	db.Save(&r)
+	return r
+}
+
+func FindRestaurant(id uint) *Restaurant {
+	var r *Restaurant
+	db.Model(&Restaurant{}).Preload("Items").Preload("Tables").Preload("Printers").Find(&r)
+	return r
+}
 
 type Restaurant struct {
 	gorm.Model
@@ -18,18 +35,46 @@ type Restaurant struct {
 	Items       []Item
 	Tables      []Table
 	Printers    []Printer
-	Categories  []Category
 }
 
-type Category struct {
-	gorm.Model
-	RestaurantId uint
-	Name         string
+func (r Restaurant) Owner() core.Account {
+	var account core.Account
+	db.Find(&account, r.AccountId)
+	return account
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
 	r.ID = utils.GenerteId()
 	return
+}
+
+func (r *Restaurant) AddPrinter(sn string, name string, t PrinterType) Printer {
+	printer := Printer{
+		RestaurantId: r.ID,
+		Name:         name,
+		Sn:           sn,
+		Type:         t,
+	}
+	db.Save(&printer)
+	r.Printers = append(r.Printers, printer)
+	return printer
+}
+
+func (r *Restaurant) AddTable(label string) Table {
+	table := Table{
+		RestaurantId: r.ID,
+		Label:        label,
+	}
+	db.Save(&table)
+	r.Tables = append(r.Tables, table)
+	return table
+}
+
+func (r *Restaurant) AddItem(item Item) Item {
+	item.ID = r.ID
+	db.Save(&item)
+	r.Items = append(r.Items, item)
+	return item
 }
 
 type Item struct {
@@ -42,6 +87,15 @@ type Item struct {
 	Tags         common.StringList `json:"tags"`
 	Printers     common.IDList     `json:"printers"`
 	Categories   common.IDList     `json:"categories"`
+}
+
+func (i Item) Owner() core.Account {
+	return FindRestaurant(i.RestaurantId).Owner()
+}
+
+func (i *Item) AddAttribute(att Attribute) Item {
+	i.Attributes = append(i.Attributes, att)
+	return *i
 }
 
 func (s *Item) Scan(value any) error {
@@ -130,6 +184,10 @@ type Table struct {
 	Label        string `json:"label"`
 }
 
+func (t Table) Owner() core.Account {
+	return FindRestaurant(t.RestaurantId).Owner()
+}
+
 func (t *Table) BeforeCreate(tx *gorm.DB) (err error) {
 	t.ID = utils.GenerteId()
 	return
@@ -183,26 +241,5 @@ func (b Bill) Total() int64 {
 
 func (b *Bill) BeforeCreate(tx *gorm.DB) (err error) {
 	b.ID = utils.GenerteId()
-	return err
-}
-
-type PrinterType string
-
-const (
-	BILL    PrinterType = "BILL"
-	KITCHEN PrinterType = "KITCHEN"
-)
-
-type Printer struct {
-	gorm.Model
-	RestaurantId uint
-	Name         string      `json:"name"`
-	Sn           string      `json:"sn"`
-	Description  string      `json:"description"`
-	Type         PrinterType `json:"type" gorm:"type:VARCHAR(128)"`
-}
-
-func (printer *Printer) BeforeCreate(tx *gorm.DB) (err error) {
-	printer.ID = utils.GenerteId()
 	return err
 }
