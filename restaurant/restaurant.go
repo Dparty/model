@@ -42,10 +42,10 @@ func (r Restaurant) ListBill(startAt, endAt *time.Time) []Bill {
 	var bills []Bill
 	ctx := db.Model(&bills)
 	if startAt != nil {
-		ctx = ctx.Where("createdAt >= ?", startAt)
+		ctx = ctx.Where("created_at >= ?", startAt)
 	}
 	if endAt != nil {
-		ctx = ctx.Where("createdAt <= ?", endAt)
+		ctx = ctx.Where("created_at <= ?", endAt)
 	}
 	ctx.Find(&bills)
 	return bills
