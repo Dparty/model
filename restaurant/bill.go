@@ -8,16 +8,34 @@ import (
 	"gorm.io/gorm"
 )
 
+type Pair struct {
+	Left  string `json:"left"`
+	Right string `json:"right"`
+}
+
 type Order struct {
 	gorm.Model
-	Item    Item    `json:"item" gorm:"type:JSON"`
-	Options Options `json:"options"`
+	Item    Item   `json:"item" gorm:"type:JSON"`
+	Options []Pair `json:"options"`
+}
+
+func (o Order) Extra(p Pair) int64 {
+	for _, attr := range o.Item.Attributes {
+		if attr.Label == p.Left {
+			for _, option := range attr.Options {
+				if option.Label == p.Right {
+					return option.Extra
+				}
+			}
+		}
+	}
+	return 0
 }
 
 func (o Order) Total() int64 {
 	var extra int64 = 0
 	for _, option := range o.Options {
-		extra += option.Extra
+		extra += o.Extra(option)
 	}
 	return o.Item.Pricing + extra
 }
