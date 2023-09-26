@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+	"time"
 
 	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model/common"
@@ -35,6 +36,19 @@ type Restaurant struct {
 	Items       []Item
 	Tables      []Table
 	Printers    []Printer
+}
+
+func (r Restaurant) ListBill(startAt, endAt *time.Time) []Bill {
+	var bills []Bill
+	ctx := db.Model(&bills)
+	if startAt != nil {
+		ctx = ctx.Where("createdAt >= ?", startAt)
+	}
+	if endAt != nil {
+		ctx = ctx.Where("createdAt <= ?", endAt)
+	}
+	ctx.Find(&bills)
+	return bills
 }
 
 func (r Restaurant) Owner() core.Account {
