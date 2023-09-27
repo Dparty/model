@@ -103,6 +103,19 @@ type Item struct {
 	Categories   common.IDList     `json:"categories"`
 }
 
+func (i Item) Extra(p Pair) int64 {
+	for _, attr := range i.Attributes {
+		if attr.Label == p.Left {
+			for _, option := range attr.Options {
+				if option.Label == p.Right {
+					return option.Extra
+				}
+			}
+		}
+	}
+	return 0
+}
+
 func (i Item) Owner() core.Account {
 	return FindRestaurant(i.RestaurantId).Owner()
 }

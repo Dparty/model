@@ -15,8 +15,8 @@ type Pair struct {
 
 type Order struct {
 	gorm.Model
-	Item    Item   `json:"item" gorm:"type:JSON"`
-	Options []Pair `json:"options"`
+	Item          Item   `json:"item" gorm:"type:JSON"`
+	Specification []Pair `json:"specification"`
 }
 
 func (o Order) Extra(p Pair) int64 {
@@ -34,7 +34,7 @@ func (o Order) Extra(p Pair) int64 {
 
 func (o Order) Total() int64 {
 	var extra int64 = 0
-	for _, option := range o.Options {
+	for _, option := range o.Specification {
 		extra += o.Extra(option)
 	}
 	return o.Item.Pricing + extra
