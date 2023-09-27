@@ -128,17 +128,17 @@ func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Attributes []Attribute
 
-func (as Attributes) GetOption(left, right string) (Option, error) {
+func (as Attributes) GetOption(left, right string) (Pair, error) {
 	for _, a := range as {
 		if left == a.Label {
 			for _, option := range a.Options {
 				if right == option.Label {
-					return option, nil
+					return Pair{Left: left, Right: right}, nil
 				}
 			}
 		}
 	}
-	return Option{}, errors.New("NotFound")
+	return Pair{}, errors.New("NotFound")
 }
 
 func (Attributes) GormDataType() string {
