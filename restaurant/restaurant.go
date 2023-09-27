@@ -24,7 +24,7 @@ func CreateRestaurant(accountId uint, name, description string) Restaurant {
 
 func FindRestaurant(id uint) *Restaurant {
 	var r *Restaurant
-	db.Model(&Restaurant{}).Preload("Items").Preload("Tables").Preload("Printers").Find(&r)
+	db.Model(&Restaurant{}).Preload("Items").Preload("Tables").Preload("Printers").Find(&r, id)
 	return r
 }
 
