@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/Dparty/common/constants"
+	"github.com/Dparty/common/fault"
 	"github.com/Dparty/common/utils"
 
 	"gorm.io/gorm"
@@ -20,13 +21,18 @@ func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
 	return err
 }
 
-func FindAccount(id uint) Account {
-	var account Account
-	db.Find(&account, id)
-	return account
+func FindAccount(id uint) (account Account, err error) {
+	ctx := db.Find(&account, id)
+	if ctx.RowsAffected == 0 {
+		return account, fault.ErrNotFound
+	}
+	return account, nil
 }
 
-func FindAccountByEmail(email string) (account *Account) {
-	db.Find(&account, "email = ?", email)
-	return account
+func FindAccountByEmail(email string) (account Account, err error) {
+	ctx := db.Find(&account, "email = ?", email)
+	if ctx.RowsAffected == 0 {
+		return account, fault.ErrNotFound
+	}
+	return account, nil
 }
