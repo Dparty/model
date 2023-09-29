@@ -27,6 +27,6 @@ func FindAccount(id uint) Account {
 }
 
 func FindAccountByEmail(email string) (account *Account) {
-	db.Find(account, "email = ?", email)
+	db.Find(&account, "email = ?", email)
 	return account
 }
