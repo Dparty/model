@@ -17,7 +17,7 @@ type Account struct {
 
 func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
 	a.ID = utils.GenerteId()
-	return
+	return err
 }
 
 func FindAccount(id uint) Account {
@@ -26,8 +26,7 @@ func FindAccount(id uint) Account {
 	return account
 }
 
-func FindAccountByEmail(email string) *Account {
-	var account *Account
-	db.First(&account, "email = ?", email)
+func FindAccountByEmail(email string) (account *Account) {
+	db.Find(account, "email = ?", email)
 	return account
 }
