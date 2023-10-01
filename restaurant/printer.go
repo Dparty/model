@@ -22,6 +22,20 @@ type Printer struct {
 	Type         PrinterType `json:"type" gorm:"type:VARCHAR(128)"`
 }
 
+func (p Printer) InUsed() bool {
+	var restaurant Restaurant
+	db.Find(&restaurant, p.RestaurantId)
+	items := restaurant.GetItems()
+	for _, item := range items {
+		for printerId := range item.Printers {
+			if printerId == int(p.ID) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func (p Printer) Owner() core.Account {
 	return FindRestaurant(p.RestaurantId).Owner()
 }

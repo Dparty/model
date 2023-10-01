@@ -38,6 +38,12 @@ type Restaurant struct {
 	Printers    []Printer
 }
 
+func (r Restaurant) GetItems() []Item {
+	var items []Item
+	db.Where("restaurant_id = ?", r.ID).Find(&items)
+	return items
+}
+
 func (r Restaurant) ListBill(startAt, endAt *time.Time) []Bill {
 	var bills []Bill
 	ctx := db.Model(&bills)
