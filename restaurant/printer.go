@@ -1,6 +1,8 @@
 package restaurant
 
 import (
+	"fmt"
+
 	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model/core"
 	"gorm.io/gorm"
@@ -25,8 +27,11 @@ type Printer struct {
 func (p Printer) InUsed() bool {
 	var restaurant Restaurant
 	db.Find(&restaurant, p.RestaurantId)
+	fmt.Println("restaurnt:", restaurant)
 	items := restaurant.GetItems()
 	for _, item := range items {
+
+		fmt.Println("item:", item)
 		for printerId := range item.Printers {
 			if printerId == int(p.ID) {
 				return true
