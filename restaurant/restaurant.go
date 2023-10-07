@@ -36,6 +36,7 @@ type Restaurant struct {
 	Items       []Item
 	Tables      []Table
 	Printers    []Printer
+	Tags        common.StringList
 }
 
 func (r Restaurant) GetItems() []Item {
