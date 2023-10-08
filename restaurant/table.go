@@ -30,3 +30,9 @@ func FindTable(conds ...interface{}) (Table, error) {
 	}
 	return table, nil
 }
+
+func ListTable(conds ...interface{}) []Table {
+	var tables []Table
+	db.Find(&tables, conds)
+	return tables
+}
