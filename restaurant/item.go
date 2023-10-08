@@ -12,7 +12,7 @@ import (
 
 func FindItem(conds ...interface{}) *Item {
 	var item *Item
-	db.Model(&Item{}).Find(&item, conds...)
+	db.Model(&Item{}).Find(&item, conds)
 	return item
 }
 
