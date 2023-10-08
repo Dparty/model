@@ -10,14 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func FindItem(conds ...interface{}) *Item {
-	var item *Item
-	db.Model(&Item{}).Find(&item, conds)
-	return item
-}
-
-func FindItemById(id uint) *Item {
-	return FindItem(id)
+func FindItem(id any) *Item {
+	var r *Item
+	db.Model(&Item{}).Find(&r, id)
+	return r
 }
 
 type Item struct {
