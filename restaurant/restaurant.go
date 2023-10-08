@@ -22,7 +22,7 @@ func CreateRestaurant(accountId uint, name, description string) Restaurant {
 	return r
 }
 
-func FindRestaurant(id uint) *Restaurant {
+func FindRestaurant(id any) *Restaurant {
 	var r *Restaurant
 	db.Model(&Restaurant{}).Preload("Items").Preload("Tables").Preload("Printers").Find(&r, id)
 	return r
