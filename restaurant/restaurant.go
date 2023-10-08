@@ -163,18 +163,3 @@ func (s Attribute) Value() (driver.Value, error) {
 	b, err := json.Marshal(s)
 	return b, err
 }
-
-type Table struct {
-	gorm.Model
-	RestaurantId uint
-	Label        string `json:"label"`
-}
-
-func (t Table) Owner() core.Account {
-	return FindRestaurant(t.RestaurantId).Owner()
-}
-
-func (t *Table) BeforeCreate(tx *gorm.DB) (err error) {
-	t.ID = utils.GenerteId()
-	return
-}
