@@ -17,6 +17,10 @@ func (t Table) Owner() core.Account {
 	return FindRestaurant(t.RestaurantId).Owner()
 }
 
+func (t Table) Delete() error {
+	return nil
+}
+
 func (t *Table) BeforeCreate(tx *gorm.DB) (err error) {
 	t.ID = utils.GenerteId()
 	return

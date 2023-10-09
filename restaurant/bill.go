@@ -19,6 +19,32 @@ type Order struct {
 	Specification []Pair `json:"specification"`
 }
 
+func (o Order) Equal(order Order) bool {
+	if o.ID != order.ID {
+		return false
+	}
+	om := o.SpecificationToMap()
+	tm := order.SpecificationToMap()
+	if len(om) != len(tm) {
+		return false
+	}
+	for k, v := range om {
+		if tm[k] != v {
+			return false
+		}
+	}
+	// for _, p := range o.
+	return true
+}
+
+func (o Order) SpecificationToMap() map[string]string {
+	var m map[string]string = make(map[string]string)
+	for _, p := range o.Specification {
+		m[p.Left] = p.Right
+	}
+	return m
+}
+
 func (o Order) Extra(p Pair) int64 {
 	for _, attr := range o.Item.Attributes {
 		if attr.Label == p.Left {

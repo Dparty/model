@@ -16,6 +16,19 @@ type Account struct {
 	Role     constants.Role `json:"role" gorm:"type:VARCHAR(128)"`
 }
 
+type Asset interface {
+	SetOwner(account Account) Asset
+	Owner() Account
+	Delete() error
+}
+
+func (a Account) DeleteAsset(asset Asset) error {
+	if asset.Owner().ID != a.ID {
+		return fault.ErrPermissionDenied
+	}
+	return asset.Delete()
+}
+
 func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
 	a.ID = utils.GenerteId()
 	return err
