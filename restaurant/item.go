@@ -4,16 +4,19 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
+	"github.com/Dparty/common/fault"
 	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model/common"
 	"github.com/Dparty/model/core"
 	"gorm.io/gorm"
 )
 
-func FindItem(id any) *Item {
-	var r *Item
-	db.Model(&Item{}).Find(&r, id)
-	return r
+func FindItem(conds ...any) (Item, error) {
+	var i Item
+	if ctx := db.Find(&i, conds...); ctx.RowsAffected == 0 {
+		return i, fault.ErrNotFound
+	}
+	return i, nil
 }
 
 type Item struct {
