@@ -21,8 +21,8 @@ func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
 	return err
 }
 
-func FindAccount(id uint) (account Account, err error) {
-	ctx := db.Find(&account, id)
+func FindAccount(conds ...any) (account Account, err error) {
+	ctx := db.Find(&account, conds...)
 	if ctx.RowsAffected == 0 {
 		return account, fault.ErrNotFound
 	}
@@ -30,9 +30,5 @@ func FindAccount(id uint) (account Account, err error) {
 }
 
 func FindAccountByEmail(email string) (account Account, err error) {
-	ctx := db.Find(&account, "email = ?", email)
-	if ctx.RowsAffected == 0 {
-		return account, fault.ErrNotFound
-	}
-	return account, nil
+	return FindAccount("email = ?", email)
 }
