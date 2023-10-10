@@ -33,7 +33,6 @@ func (o Order) Equal(order Order) bool {
 			return false
 		}
 	}
-	// for _, p := range o.
 	return true
 }
 
@@ -84,6 +83,7 @@ func (s Orders) Value() (driver.Value, error) {
 type Bill struct {
 	gorm.Model
 	RestaurantId uint `gorm:"index:rest_id"`
+	TableId      uint
 	Orders       Orders
 	PickUpCode   int64
 	TableLabel   string
