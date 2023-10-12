@@ -11,6 +11,8 @@ type Table struct {
 	gorm.Model
 	RestaurantId uint
 	Label        string `json:"label"`
+	X            int64  `json:"x"`
+	Y            int64  `json:"y"`
 }
 
 func (t Table) Owner() core.Account {
