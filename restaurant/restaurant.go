@@ -4,7 +4,6 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/Dparty/common/utils"
@@ -23,8 +22,8 @@ func CreateRestaurant(accountId uint, name, description string) Restaurant {
 	return r
 }
 
-func FindRestaurant(id any) *Restaurant {
-	var r *Restaurant
+func FindRestaurant(id any) Restaurant {
+	var r Restaurant
 	db.Model(&Restaurant{}).Preload("Items").Preload("Tables").Preload("Printers").Find(&r, id)
 	return r
 }
@@ -62,7 +61,6 @@ func (r Restaurant) ListBill(startAt, endAt *time.Time) []Bill {
 func (r Restaurant) Owner() core.Account {
 	var account core.Account
 	db.Find(&account, r.AccountId)
-	fmt.Println("restaurant get owner", account)
 	return account
 }
 
