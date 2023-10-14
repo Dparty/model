@@ -15,6 +15,12 @@ type Table struct {
 	Y            int64  `json:"y"`
 }
 
+func (t Table) ListBills() []Bill {
+	var bills []Bill
+	db.Find(&bills, "table_id = ?", t.ID)
+	return bills
+}
+
 func (t Table) Owner() core.Account {
 	return FindRestaurant(t.RestaurantId).Owner()
 }

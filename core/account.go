@@ -16,7 +16,7 @@ type Account struct {
 	Role     constants.Role `json:"role" gorm:"type:VARCHAR(128)"`
 }
 
-func (a Account) Owner(asset Asset) bool {
+func (a Account) Own(asset Asset) bool {
 	return a.ID == asset.Owner().ID
 }
 
