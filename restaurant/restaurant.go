@@ -59,8 +59,7 @@ func (r Restaurant) ListBill(startAt, endAt *time.Time) []Bill {
 }
 
 func (r Restaurant) Owner() core.Account {
-	var account core.Account
-	db.Find(&account, r.AccountId)
+	account, _ := core.Find(r.AccountId)
 	return account
 }
 

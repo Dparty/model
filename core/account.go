@@ -2,7 +2,6 @@ package core
 
 import (
 	"github.com/Dparty/common/constants"
-	"github.com/Dparty/common/fault"
 	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model"
 
@@ -17,8 +16,12 @@ type Account struct {
 	Role     constants.Role `json:"role" gorm:"type:VARCHAR(128)"`
 }
 
+func (a Account) ID() uint {
+	return a.Model.ID
+}
+
 func (a Account) Own(asset Asset) bool {
-	return a.ID == asset.Owner().ID
+	return a.ID() == asset.Owner().ID()
 }
 
 type Asset interface {
@@ -26,15 +29,8 @@ type Asset interface {
 	Delete() error
 }
 
-func (a Account) DeleteAsset(asset Asset) error {
-	if asset.Owner().ID != a.ID {
-		return fault.ErrPermissionDenied
-	}
-	return asset.Delete()
-}
-
 func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
-	a.ID = utils.GenerteId()
+	a.Model.ID = utils.GenerteId()
 	return err
 }
 
