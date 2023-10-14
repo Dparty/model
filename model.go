@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Dparty/model/core"
@@ -8,6 +9,10 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
+
+var db *gorm.DB
+
+var ErrNotFound = errors.New("entity not found")
 
 func NewConnection(user, password, host, port, database string) (db *gorm.DB, err error) {
 	dsn := fmt.Sprintf(
@@ -18,7 +23,16 @@ func NewConnection(user, password, host, port, database string) (db *gorm.DB, er
 	return db, err
 }
 
-func Init(db *gorm.DB) {
+func FindOne[T any](model T, conds ...any) (T, error) {
+	ctx := db.Find(model, conds...)
+	if ctx.RowsAffected == 0 {
+		return model, nil
+	}
+	return model, nil
+}
+
+func Init(inject *gorm.DB) {
+	db = inject
 	core.Init(db)
 	restaurant.Init(db)
 }
