@@ -8,9 +8,5 @@ var db *gorm.DB
 
 func Init(inject *gorm.DB) {
 	db = inject
-	db.AutoMigrate(&Restaurant{})
-	db.AutoMigrate(&Item{})
-	db.AutoMigrate(&Printer{})
-	db.AutoMigrate(&Table{})
-	db.AutoMigrate(&Bill{})
+	db.AutoMigrate(&Restaurant{}, &Item{}, &Printer{}, &Table{}, &Bill{})
 }

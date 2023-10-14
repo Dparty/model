@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Dparty/model/core"
-	"github.com/Dparty/model/restaurant"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -23,9 +21,8 @@ func NewConnection(user, password, host, port, database string) (db *gorm.DB, er
 	return db, err
 }
 
-func FindOne[T any](model T, conds ...any) (T, error) {
-	ctx := db.Find(model, conds...)
-	if ctx.RowsAffected == 0 {
+func Find[T any](model T, conds ...any) (T, error) {
+	if ctx := db.Find(model, conds...); ctx.RowsAffected == 0 {
 		return model, nil
 	}
 	return model, nil
@@ -33,10 +30,4 @@ func FindOne[T any](model T, conds ...any) (T, error) {
 
 func Init(inject *gorm.DB) {
 	db = inject
-	core.Init(db)
-	restaurant.Init(db)
-}
-
-type Asset interface {
-	Owner() core.Account
 }

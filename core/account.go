@@ -4,6 +4,7 @@ import (
 	"github.com/Dparty/common/constants"
 	"github.com/Dparty/common/fault"
 	"github.com/Dparty/common/utils"
+	"github.com/Dparty/model"
 
 	"gorm.io/gorm"
 )
@@ -37,14 +38,11 @@ func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
 	return err
 }
 
-func FindAccount(conds ...any) (account Account, err error) {
-	ctx := db.Find(&account, conds...)
-	if ctx.RowsAffected == 0 {
-		return account, fault.ErrNotFound
-	}
-	return account, nil
+func Find(conds ...any) (Account, error) {
+	account, err := model.Find(&Account{}, conds...)
+	return *account, err
 }
 
 func FindAccountByEmail(email string) (account Account, err error) {
-	return FindAccount("email = ?", email)
+	return Find("email = ?", email)
 }
