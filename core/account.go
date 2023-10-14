@@ -16,8 +16,11 @@ type Account struct {
 	Role     constants.Role `json:"role" gorm:"type:VARCHAR(128)"`
 }
 
+func (a Account) Owner(asset Asset) bool {
+	return a.ID == asset.Owner().ID
+}
+
 type Asset interface {
-	SetOwner(account Account) Asset
 	Owner() Account
 	Delete() error
 }
