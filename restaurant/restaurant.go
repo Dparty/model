@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/Dparty/common/utils"
@@ -61,6 +62,7 @@ func (r Restaurant) ListBill(startAt, endAt *time.Time) []Bill {
 func (r Restaurant) Owner() core.Account {
 	var account core.Account
 	db.Find(&account, r.AccountId)
+	fmt.Println("restaurant get owner", account)
 	return account
 }
 
