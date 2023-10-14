@@ -22,9 +22,9 @@ func CreateRestaurant(accountId uint, name, description string) Restaurant {
 	return r
 }
 
-func FindRestaurant(id any) Restaurant {
+func FindRestaurant(conds ...any) Restaurant {
 	var r Restaurant
-	db.Model(&Restaurant{}).Preload("Items").Preload("Tables").Preload("Printers").Find(&r, id)
+	db.Model(&r).Preload("Items").Preload("Tables").Preload("Printers").Find(&r, conds...)
 	return r
 }
 
