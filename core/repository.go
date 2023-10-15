@@ -15,13 +15,21 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 
-func (r Repository) Find(conds ...any) (*Account, *gorm.DB) {
+func (r Repository) Get(conds ...any) *Account {
 	var account Account
 	ctx := r.db.Find(account, conds...)
 	if ctx.RowsAffected == 0 {
-		return nil, ctx
+		return nil
 	}
-	return &account, ctx
+	return &account
+}
+
+func (r Repository) GetById(id uint) *Account {
+	return r.Get(id)
+}
+
+func (r Repository) GetByEmail(email string) *Account {
+	return r.Get("email = ?", email)
 }
 
 func Find(conds ...any) (Account, error) {
