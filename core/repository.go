@@ -15,12 +15,13 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 
-func (r Repository) Find(account *Account, conds ...any) (*Account, *gorm.DB) {
+func (r Repository) Find(conds ...any) (*Account, *gorm.DB) {
+	var account Account
 	ctx := r.db.Find(account, conds...)
 	if ctx.RowsAffected == 0 {
 		return nil, ctx
 	}
-	return account, ctx
+	return &account, ctx
 }
 
 func Find(conds ...any) (Account, error) {
