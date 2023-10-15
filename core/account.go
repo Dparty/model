@@ -3,7 +3,6 @@ package core
 import (
 	"github.com/Dparty/common/constants"
 	"github.com/Dparty/common/utils"
-	"github.com/Dparty/model"
 
 	"gorm.io/gorm"
 )
@@ -32,13 +31,4 @@ type Asset interface {
 func (a *Account) BeforeCreate(tx *gorm.DB) (err error) {
 	a.Model.ID = utils.GenerteId()
 	return err
-}
-
-func Find(conds ...any) (Account, error) {
-	account, err := model.Find(&Account{}, conds...)
-	return *account, err
-}
-
-func FindAccountByEmail(email string) (account Account, err error) {
-	return Find("email = ?", email)
 }
