@@ -32,6 +32,12 @@ func (r Repository) GetByEmail(email string) *Account {
 	return r.Get("email = ?", email)
 }
 
+func (r Repository) List(conds ...any) []Account {
+	var accounts []Account
+	r.db.Find(&accounts, conds...)
+	return accounts
+}
+
 func Find(conds ...any) (Account, error) {
 	account, err := model.Find(&Account{}, conds...)
 	return *account, err

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Dparty/common/utils"
+	interfaces "github.com/Dparty/model/abstract"
 	"github.com/Dparty/model/common"
 	"github.com/Dparty/model/core"
 	"gorm.io/gorm"
@@ -37,6 +38,10 @@ type Restaurant struct {
 	Tables      []Table
 	Printers    []Printer
 	Tags        common.StringList
+}
+
+func (r *Restaurant) SetOwner(owner interfaces.Owner) {
+	r.AccountId = owner.ID()
 }
 
 func (r Restaurant) GetItems() []Item {
