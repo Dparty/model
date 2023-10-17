@@ -8,5 +8,4 @@ type Owner interface {
 type Asset interface {
 	SetOwner(owner Owner)
 	Owner() Owner
-	Save() bool
 }

@@ -1,31 +1,21 @@
 package restaurant
 
 import (
-	interfaces "github.com/Dparty/model/abstract"
+	abstract "github.com/Dparty/model/abstract"
 	"gorm.io/gorm"
 )
 
-type Repository struct {
+type RestaurantRepository struct {
 	db *gorm.DB
 }
 
-// Owner implements interfaces.Asset.
-func (Repository) Owner() interfaces.Owner {
-	panic("unimplemented")
-}
-
-// Save implements interfaces.Asset.
-func (Repository) Save() error {
-	panic("unimplemented")
-}
-
-func NewRepository(db *gorm.DB) Repository {
-	return Repository{
+func NewRestaurantRepository(db *gorm.DB) RestaurantRepository {
+	return RestaurantRepository{
 		db: db,
 	}
 }
 
-func (r Repository) Get(conds ...any) *Restaurant {
+func (r RestaurantRepository) Get(conds ...any) *Restaurant {
 	var restaurant Restaurant
 	ctx := r.db.Find(restaurant, conds...)
 	if ctx.RowsAffected == 0 {
@@ -34,17 +24,17 @@ func (r Repository) Get(conds ...any) *Restaurant {
 	return &restaurant
 }
 
-func (r Repository) GetById(id uint) *Restaurant {
+func (r RestaurantRepository) GetById(id uint) *Restaurant {
 	return r.Get(id)
 }
 
-func (r Repository) List(conds ...any) []Restaurant {
+func (r RestaurantRepository) List(conds ...any) []Restaurant {
 	var restaurants []Restaurant
 	r.db.Find(&restaurants, conds...)
 	return restaurants
 }
 
-func (r Repository) ListBy(accountId *uint) []Restaurant {
+func (r RestaurantRepository) ListBy(accountId *uint) []Restaurant {
 	ctx := r.db.Model(&Restaurant{})
 	if accountId != nil {
 		ctx.Where("account_id = ?", accountId)
@@ -54,7 +44,7 @@ func (r Repository) ListBy(accountId *uint) []Restaurant {
 	return restaurants
 }
 
-func (r Repository) Create(owner interfaces.Owner, name, description string) Restaurant {
+func (r RestaurantRepository) Create(owner abstract.Owner, name, description string) Restaurant {
 	restaurant := Restaurant{
 		Name:        name,
 		Description: description,
@@ -62,4 +52,12 @@ func (r Repository) Create(owner interfaces.Owner, name, description string) Res
 	restaurant.SetOwner(owner)
 	db.Save(&restaurant)
 	return restaurant
+}
+
+func NewTableRepository(db *gorm.DB) TableRepository {
+	return TableRepository{db}
+}
+
+type TableRepository struct {
+	db *gorm.DB
 }

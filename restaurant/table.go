@@ -3,7 +3,6 @@ package restaurant
 import (
 	"github.com/Dparty/common/fault"
 	"github.com/Dparty/common/utils"
-	"github.com/Dparty/model/core"
 	"gorm.io/gorm"
 )
 
@@ -21,12 +20,8 @@ func (t Table) ListBills() []Bill {
 	return bills
 }
 
-func (t Table) Owner() core.Account {
-	return FindRestaurant(t.RestaurantId).Owner()
-}
-
-func (t Table) Delete() error {
-	return nil
+func (t Table) Owner() Restaurant {
+	return *restaurantRepository.GetById(t.RestaurantId)
 }
 
 func (t *Table) BeforeCreate(tx *gorm.DB) (err error) {
