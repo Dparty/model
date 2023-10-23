@@ -20,7 +20,7 @@ type Order struct {
 }
 
 func (o Order) Equal(order Order) bool {
-	if o.ID != order.ID {
+	if o.Item.ID != order.Item.ID {
 		return false
 	}
 	om := o.SpecificationToMap()
