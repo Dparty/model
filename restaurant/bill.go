@@ -3,6 +3,7 @@ package restaurant
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"math"
 
 	"github.com/Dparty/common/utils"
 	"gorm.io/gorm"
@@ -62,7 +63,7 @@ func (o Order) Total() int64 {
 	for _, option := range o.Specification {
 		extra += o.Extra(option)
 	}
-	return o.Item.Pricing + extra
+	return int64(math.Floor(float64(o.Item.Pricing+extra) * 1.1))
 }
 
 type Orders []Order
